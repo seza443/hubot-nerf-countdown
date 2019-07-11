@@ -20,7 +20,16 @@
 //  https://github.com/seza443/hubot-nerf-countdown
 
 const INITIAL_COUNTER = 5;
+const PRE_FIGHT_TIMER = 5000;
 const TIMER = 1000;
+
+const START_FIGHT = [
+  "You should get ready for this...",
+  "Brace yourselves",
+  "Get ready!",
+  "Grab a gun...",
+  "What is the meaning of life ? Just kidding, get your gun ready",
+];
 
 // https://textfac.es/
 const GUNS = [
@@ -55,7 +64,7 @@ function nerfCountdown(robot, msg, counter) {
   if (counter > 0) {
     msg.send('' + counter);
     setTimeout(
-      function() {
+      function () {
         nerfCountdown(robot, msg, counter - 1);
       }, TIMER);
   } else {
@@ -67,6 +76,9 @@ function nerfCountdown(robot, msg, counter) {
 module.exports = function (robot) {
 
   robot.respond(/(nerf)|(gun)|(war)|(shoot)$/i, function (msg) {
-    nerfCountdown(robot, msg, INITIAL_COUNTER);
+    msg.send(msg.random(START_FIGHT));
+    setTimeout(function () {
+      nerfCountdown(robot, msg, INITIAL_COUNTER);
+    }, PRE_FIGHT_TIMER);
   });
 };
